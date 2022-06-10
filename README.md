@@ -1,15 +1,17 @@
-#thealth-progress-utils
+# thealth-progress-utils
 
 Repositório central com bibliotecas criadas e mantidas pela equipe da THEALTH Ltda, empresa especializada em desenvolvimento e consultoria de software, focada (mas não limitada) em sistemas de saúde.  
 
 Diversos dos sistemas que trabalhamos são escritos em OpenEdge Progress (https://www.progress.com/openedge), então acabamos desenvolvendo estas  funções para facilitar o desenvolvimento de customizações para estes produtos.
 
-# thealth/libs 
+## THEALTH/LIBS
 
-Dentro das libs, existem diversas bibliotecas, para diversos fins.
+Conjunto de funções e apis para auxiliar no desenvolvimento.
 
+* [api-mantem-parametros](#api-mantem-parametros)
+* [gerar-arquivo](#gerar-arquivo)
 
-## thealth/libs/api-mantem-parametro.p
+## <a name="api-mantem-parametros"></a> THEALTH/LIBS/API-MANTEM-PARAMETROS
 
 Permite criar, buscar e remover parametros de forma fácil, utilizando uma tabela genérica.
 Para criar a tabela, o arquivo thealth/libs/api-mantem-parametros.df possui a definição da estrutura da tabela (basta ajustar os campos. 
@@ -41,9 +43,9 @@ run buscarParametro in hd-api-config
      no-error.  
 ```
 
-## thealth/libs/gerar-arquivo.w
+## <a name="gerar-arquivo"></a> thealth/libs/gerar-arquivo.w
 
-Exibe um frame simples para informar o nome caminho e nome de um arquivo, permitindo que o usuário escolha o diretório e ajuste o nome do arquivo.
+Exibe um frame simples para informar o caminho e nome de um arquivo, permitindo que o usuário escolha o diretório e ajuste o nome do arquivo.
 
 ```
 ...
@@ -66,8 +68,9 @@ A API publica um evento para cada linha registrada no Excel
 
 ### MÉTODOS
 
-* exportarExcel - Exporta os dados para o Excel sem aplicar nenhuma regra de formatação especial. Será utilizado o label definido nas colunas da temp-table para definir o título da coluna no excel, bem como o formato
-* exportarExcelEspecial - Exporta os dados para o Excel permitindo personalizar algumas informações sobre cada coluna
+> exportarExcel - Exporta os dados para o Excel sem aplicar nenhuma regra de formatação especial. Será utilizado o label definido nas colunas da temp-table para definir o título da coluna no excel, bem como o formato
+
+> exportarExcelEspecial - Exporta os dados para o Excel permitindo personalizar algumas informações sobre cada coluna
 
 
 ```
@@ -94,4 +97,38 @@ subscribe to EV_EXPORTAR_EXCEL_LINHA in hd-exportar run-procedure 'eventoExporta
 // chama a api
 run exportarExcel in hd-exportar (input  ch-caminho-completo,
                                   input  buffer temp-exportar:handle).
+```
+
+## THEALTH/LIBS/STATUS-PROCESSAMENTO.W
+
+Cria uma janela modal que exibe mensagens para informar o usuário sobre o andamento de um determinado processo. Permite ainda exibir um botão de ***cancelar*** processamento.
+
+### PROCEDURES
+
+> mostrarMensagem - Exibe a mensagem passada por parâmetro. Caso a janela de status ainda não esteja visível, cria e exibe a janela.
+
+Para acessar o evento disparado ao clicar no botão de cancelar, importar a include `{thealth/libs/status-processamento.i}` no programa que vai usar a janela de status.
+
+```
+run thealth/libs/status-processamento.w persistent set hd-status (input  "Exportando",  // titulo da janela
+                                                                  input  no)            // indica se deve exibir o botão de cancelar.
+
+subscribe to EV_STATUS_PROC_CANCELAR in hd-status run-procedure 'eventoCancelarProcessamento'.
+
+
+for each usuario:
+
+    run mostrarMensagem (input  substitute ('Lendo usuario &1', usuario.ch-nome-usuario)) no-error.
+end.
+
+...
+
+procedure eventoCancelarProcessamento :
+
+    delete object hd-status no-error. // fecha a janela de status
+    // proceder com demais regras para cancelar o processamento.
+    ...
+    
+end procedure.
+
 ```
