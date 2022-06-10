@@ -4,7 +4,7 @@ Repositório central com bibliotecas criadas e mantidas pela equipe da THEALTH L
 
 Diversos dos sistemas que trabalhamos são escritos em OpenEdge Progress (https://www.progress.com/openedge), então acabamos desenvolvendo estas  funções para facilitar o desenvolvimento de customizações para estes produtos.
 
-# thealth/libs
+# thealth/libs 
 
 Dentro das libs, existem diversas bibliotecas, para diversos fins.
 
