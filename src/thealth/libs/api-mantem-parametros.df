@@ -1,0 +1,43 @@
+ADD TABLE "thealth-exemplo-param"
+  AREA "Schema Area"
+  DUMP-NAME "thealth-exemplo-param"
+
+ADD FIELD "ch-programa" OF "thealth-exemplo-param" AS character 
+  FORMAT "x(200)"
+  INITIAL ""
+  POSITION 2
+  MAX-WIDTH 400
+  ORDER 10
+
+ADD FIELD "ch-usuario" OF "thealth-exemplo-param" AS character 
+  FORMAT "x(200)"
+  INITIAL ""
+  POSITION 3
+  MAX-WIDTH 400
+  ORDER 20
+
+ADD FIELD "ch-chave" OF "thealth-exemplo-param" AS character 
+  FORMAT "x(200)"
+  INITIAL ""
+  POSITION 4
+  MAX-WIDTH 400
+  ORDER 30
+
+ADD FIELD "lo-valor" OF "thealth-exemplo-param" AS clob 
+  INITIAL ?
+  POSITION 5
+  LOB-AREA "Schema Area"
+  LOB-BYTES 104857600
+  LOB-SIZE 100M
+  CLOB-CODEPAGE "IBM850"
+  CLOB-COLLATION "BASIC"
+  CLOB-TYPE 2
+  ORDER 40
+
+ADD INDEX "idx1" ON "thealth-exemplo-param" 
+  AREA "Schema Area"
+  UNIQUE
+  PRIMARY
+  INDEX-FIELD "ch-programa" ASCENDING 
+  INDEX-FIELD "ch-usuario" ASCENDING 
+  INDEX-FIELD "ch-chave" ASCENDING 
